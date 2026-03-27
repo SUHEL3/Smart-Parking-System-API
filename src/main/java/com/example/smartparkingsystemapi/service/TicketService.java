@@ -53,5 +53,18 @@ public class TicketService {
 
         return ticketRepository.save(ticket);
     }
+    @Transactional
+    public Ticket exitVehicle(long id){
+        Ticket newTicket = ticketRepository.findById(id).orElseThrow(()-> new RuntimeException("Ticket not found."));
+        if(newTicket.getExitTime() != null){
+            throw new RuntimeException("Vehicle already exited.");
+        }
+        newTicket.setExitTime(LocalDateTime.now());
+        
+        ParkingSlot slot = newTicket.getParkingSlot();
+        slot.setSlotStatus(SlotStatus.available);
+        parkingSlotRepository.save(slot);
 
+        return ticketRepository.save(newTicket);
+    }
 }

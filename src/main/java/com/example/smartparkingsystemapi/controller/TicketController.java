@@ -27,4 +27,8 @@ public class TicketController {
         return ticketService.parkVehicle(request.getVehicleNumber(),request.getVehicleType());
     }
 
+    @PutMapping("/exit/{id}")
+    public Ticket exitVehicle(@PathVariable long id){
+        return ticketService.exitVehicle(id);
+    }
 }
