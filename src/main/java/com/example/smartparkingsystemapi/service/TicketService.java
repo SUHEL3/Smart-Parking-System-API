@@ -60,7 +60,7 @@ public class TicketService {
             throw new RuntimeException("Vehicle already exited.");
         }
         newTicket.setExitTime(LocalDateTime.now());
-        
+
         ParkingSlot slot = newTicket.getParkingSlot();
         slot.setSlotStatus(SlotStatus.available);
         parkingSlotRepository.save(slot);

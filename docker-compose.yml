@@ -1,0 +1,22 @@
+version: "3"
+
+services:
+  db:
+    image: mysql
+    container_name: mydb
+    environment:
+      MYSQL_ROOT_PASSWORD: pass@123
+      MYSQL_DATABASE: student_db
+      MYSQL_USER: user
+      MYSQL_PASSWORD: user@123
+    ports:
+      - "3307:3306"
+
+  backend:
+    build: .
+    container_name: ParkingSystemBackend
+    ports:
+      - "8080:8080"
+    depends_on:
+      - db
+    restart: always
