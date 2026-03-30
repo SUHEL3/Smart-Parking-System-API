@@ -5,6 +5,7 @@ import com.example.smartparkingsystemapi.entity.Ticket;
 import com.example.smartparkingsystemapi.repository.TicketRepository;
 import com.example.smartparkingsystemapi.service.TicketService;
 import com.example.smartparkingsystemapi.wrapper.ApiResponse;
+import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -25,8 +26,8 @@ public class TicketController {
     }
 
     @PostMapping("/park")
-    public ResponseEntity<ApiResponse<Ticket>> parkVehicle(@RequestBody RequestParking request){
-        Ticket ticket = ticketService.parkVehicle(request.getVehicleNumber(),request.getVehicleType());
+    public ResponseEntity<ApiResponse<Ticket>> parkVehicle(@Valid @RequestBody RequestParking request){
+        Ticket ticket = ticketService.parkVehicle(request.getVehicleNumber(),request.getVehicleType(),request.getPhoneNumber());
         ApiResponse<Ticket> response = new ApiResponse<Ticket>("Vehicle parked",ticket);
         return ResponseEntity.ok(response);
     }

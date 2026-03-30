@@ -14,7 +14,8 @@ Content-Type: application/json
 
 {
   "vehicleNumber": "MH12AB1234",
-  "vehicleType": "car"
+  "vehicleType": "car",
+  "phoneNumber": 9020713497
 }
 
 ###

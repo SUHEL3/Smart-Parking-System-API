@@ -30,7 +30,7 @@ public class TicketService {
     }
 
     @Transactional
-    public Ticket parkVehicle(String vehicleNumber, VehicleType vehicleType){
+    public Ticket parkVehicle(String vehicleNumber, VehicleType vehicleType, Long phoneNumber){
         ticketRepository.findByVehicleNumberAndExitTimeIsNull(vehicleNumber)
                 .ifPresent(t -> {
                             throw new RuntimeException("Vehicle already parked!"+t.getVehicleNumber());
@@ -50,6 +50,7 @@ public class TicketService {
         ticket.setVehicleType(vehicleType);
         ticket.setEntryTime(LocalDateTime.now());
         ticket.setParkingSlot(parkingSlot);
+        ticket.setPhoneNumber(phoneNumber);
 
         return ticketRepository.save(ticket);
     }
