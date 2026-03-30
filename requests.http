@@ -16,3 +16,6 @@ Content-Type: application/json
   "vehicleNumber": "MH12AB1234",
   "vehicleType": "car"
 }
+
+###
+PUT http://localhost:8080/api/v1/ticket/exit/101

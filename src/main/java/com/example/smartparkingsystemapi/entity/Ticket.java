@@ -24,6 +24,8 @@ public class Ticket {
 
     private Double amount;
 
+    private Long phoneNumber;
+
     @ManyToOne
     @JoinColumn(name = "slot_id")
     private ParkingSlot parkingSlot;
@@ -32,7 +34,7 @@ public class Ticket {
 
     }
 
-    public Ticket(Long id, String vehicleNumber, VehicleType vehicleType, LocalDateTime entryTime, LocalDateTime exitTime, Double amount, ParkingSlot parkingSlot) {
+    public Ticket(Long id, String vehicleNumber, VehicleType vehicleType, LocalDateTime entryTime, LocalDateTime exitTime, Double amount, ParkingSlot parkingSlot ,Long phoneNumber) {
         this.id = id;
         this.vehicleNumber = vehicleNumber;
         this.vehicleType = vehicleType;
@@ -40,6 +42,15 @@ public class Ticket {
         this.exitTime = exitTime;
         this.amount = amount;
         this.parkingSlot = parkingSlot;
+        this.phoneNumber = phoneNumber;
+    }
+
+    public Long getPhoneNumber() {
+        return phoneNumber;
+    }
+
+    public void setPhoneNumber(Long phoneNumber) {
+        this.phoneNumber = phoneNumber;
     }
 
     public Long getId() {
