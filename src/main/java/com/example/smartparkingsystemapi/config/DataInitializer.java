@@ -21,6 +21,7 @@ public class DataInitializer {
                List<ParkingSlot> pl = new ArrayList<>();
                for(int i = 1; i <= 60 ;i++){
                     ParkingSlot newSlot = new ParkingSlot();
+                    newSlot.setId((long) i);
                     newSlot.setSlotNumber("SLOT-"+i);
                     newSlot.setSlotStatus(SlotStatus.available);
                     if(i>30){

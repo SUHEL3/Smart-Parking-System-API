@@ -10,6 +10,7 @@ import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.GetMapping;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.List;
@@ -67,5 +68,15 @@ public class TicketService {
         parkingSlotRepository.save(slot);
 
         return ticketRepository.save(newTicket);
+    }
+
+    LocalDate date = LocalDate.now();
+    LocalDateTime startOfDay = date.atStartOfDay();
+    LocalDateTime startOfNextDay = date.plusDays(1).atStartOfDay();
+
+    public List<Ticket> getReport(){
+        return ticketRepository.findByEntryTimeBetweenOrExitTimeBetween(startOfDay,startOfNextDay,
+                startOfDay,startOfNextDay
+        );
     }
 }

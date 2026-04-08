@@ -8,7 +8,6 @@ import jakarta.persistence.*;
 @Table(name = "parking_slot")
 public class ParkingSlot {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     private String slotNumber;

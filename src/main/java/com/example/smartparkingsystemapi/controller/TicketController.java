@@ -28,7 +28,7 @@ public class TicketController {
     @PostMapping("/park")
     public ResponseEntity<ApiResponse<Ticket>> parkVehicle(@Valid @RequestBody RequestParking request){
         Ticket ticket = ticketService.parkVehicle(request.getVehicleNumber(),request.getVehicleType(),request.getPhoneNumber());
-        ApiResponse<Ticket> response = new ApiResponse<Ticket>("Vehicle parked",ticket);
+        ApiResponse<Ticket> response = new ApiResponse<>("Vehicle parked",ticket);
         return ResponseEntity.ok(response);
     }
 
@@ -37,5 +37,12 @@ public class TicketController {
          Ticket ticket = ticketService.exitVehicle(id);
          ApiResponse<Ticket> response = new ApiResponse<>("Vehicle exited",ticket);
          return ResponseEntity.status(200).body(response);
+    }
+
+    @GetMapping("/report")
+    public ResponseEntity<ApiResponse<List<Ticket>>> getReport(){
+        List<Ticket> report = ticketService.getReport();
+        ApiResponse<List<Ticket>> response = new ApiResponse<>("Report fetched",report);
+        return ResponseEntity.ok(response);
     }
 }
