@@ -8,6 +8,7 @@ public class SmartParkingSystemApiApplication {
 
     public static void main(String[] args) {
         SpringApplication.run(SmartParkingSystemApiApplication.class, args);
+        System.out.println("DB URL = " + System.getProperty("spring.datasource.url"));
     }
 
 }

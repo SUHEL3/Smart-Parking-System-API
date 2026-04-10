@@ -6,8 +6,8 @@ GET https://examples.http-client.intellij.net/get
 GET http://localhost:8080/api/v1/parking_slots
 
 ###
-GET http://localhost:8080/api/v1/ticket
-
+GET http://localhost:8080/api/v1/ticket/getAllTicket
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJmYWlqYWFuQHRlc3QuY29tIiwiaWF0IjoxNzc1ODQ0NTg1LCJleHAiOjE3NzU4NDgxODV9.HhiJ1vHivlpJx_qzDyVt1YZTQCRiF-gFP3PYFIMSG58
 ###
 POST http://localhost:8080/api/v1/ticket/park
 Content-Type: application/json
@@ -26,9 +26,9 @@ POST http://localhost:8080/api/v1/auth/register
 Content-Type: application/json
 
 {
-  "name": "Suhel",
-  "email": "suhel@test.com",
-  "password": "12345678"
+  "name": "Faijaan",
+  "email": "faijaan@test.com",
+  "password": "87654321"
 }
 
 ###
@@ -36,9 +36,10 @@ POST http://localhost:8080/api/v1/auth/login
 Content-Type: application/json
 
 {
-  "email": "suhel@test.com",
-  "password": "12345678"
+  "email": "faijaan@test.com",
+  "password": "87654321"
 }
 
 ###
 GET http://localhost:8080/api/v1/ticket/report
+

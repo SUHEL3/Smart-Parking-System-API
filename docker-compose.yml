@@ -6,11 +6,15 @@ services:
     container_name: mydb
     environment:
       MYSQL_ROOT_PASSWORD: pass@123
-      MYSQL_DATABASE: parking_db
+      MYSQL_DATABASE: parkingdb
       MYSQL_USER: user
       MYSQL_PASSWORD: user@123
     ports:
       - "3307:3306"
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      interval: 10s
+      retries: 5
 
   backend:
     build: .
@@ -18,5 +22,6 @@ services:
     ports:
       - "8080:8080"
     depends_on:
-      - db
+       db:
+          condition: service_healthy
     restart: always
