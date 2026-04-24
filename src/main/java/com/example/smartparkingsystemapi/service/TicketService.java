@@ -8,12 +8,12 @@ import com.example.smartparkingsystemapi.repository.ParkingSlotRepository;
 import com.example.smartparkingsystemapi.repository.TicketRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.GetMapping;
 
+import java.time.Duration;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.LocalTime;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class TicketService {
@@ -63,6 +63,12 @@ public class TicketService {
         }
         newTicket.setExitTime(LocalDateTime.now());
 
+        //Amount calculation
+        long second = Duration.between(newTicket.getEntryTime(),LocalDateTime.now()).getSeconds();
+        double hours = Math.ceil(second/3600.0);
+        double amount = (hours >= 2) ? hours*10 : 2*10+(hours-2)*5;
+        newTicket.setAmount(amount);
+
         ParkingSlot slot = newTicket.getParkingSlot();
         slot.setSlotStatus(SlotStatus.available);
         parkingSlotRepository.save(slot);
@@ -78,5 +84,17 @@ public class TicketService {
         return ticketRepository.findByEntryTimeBetweenOrExitTimeBetween(startOfDay,startOfNextDay,
                 startOfDay,startOfNextDay
         );
+    }
+
+    public Double getTodayRevenue(){
+        return Optional.ofNullable(ticketRepository.getTodayRevenue()).orElse(0.0);
+    }
+
+    public Double getMonthRevenue(){
+        return Optional.ofNullable(ticketRepository.getMonthlyRevenue()).orElse(0.0);
+    }
+
+    public Double getRevenue(int month,int year){
+        return Optional.ofNullable(ticketRepository.getRevenue(month,year)).orElse(0.0);
     }
 }

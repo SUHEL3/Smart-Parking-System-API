@@ -2,6 +2,8 @@ package com.example.smartparkingsystemapi.repository;
 
 import com.example.smartparkingsystemapi.entity.Ticket;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -15,4 +17,22 @@ public interface TicketRepository extends JpaRepository<Ticket, Long> {
             LocalDateTime start1,LocalDateTime end1,
             LocalDateTime start2,LocalDateTime end2
     );
+
+    @Query("SELECT SUM(t.amount) FROM Ticket t " +
+            "WHERE DATE(t.exitTime) = CURRENT_DATE " +
+            "AND t.exitTime IS NOT NULL")
+    Double getTodayRevenue();
+
+    @Query("SELECT SUM(t.amount) FROM Ticket t " +
+            "WHERE MONTH(t.exitTime) = MONTH(CURRENT_DATE) " +
+            "AND YEAR(t.exitTime) = YEAR(CURRENT_DATE) " +
+            "AND t.exitTime IS NOT NULL")
+    Double getMonthlyRevenue();
+
+    @Query("SELECT SUM(t.amount) FROM Ticket t " +
+    "WHERE MONTH(t.exitTime) = :month " +
+    "AND YEAR(T.exitTime) = :year ")
+    Double getRevenue(@Param("month") Integer month,
+                      @Param("year") Integer year);
+
 }

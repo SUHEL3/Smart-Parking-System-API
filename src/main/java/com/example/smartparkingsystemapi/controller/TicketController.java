@@ -45,4 +45,26 @@ public class TicketController {
         ApiResponse<List<Ticket>> response = new ApiResponse<>("Report fetched",report);
         return ResponseEntity.ok(response);
     }
+
+    @GetMapping("/todayrevenue")
+    public ResponseEntity<ApiResponse<Double>> getTodayRevenue(){
+        Double amount = ticketService.getTodayRevenue();
+        ApiResponse<Double> response = new ApiResponse<>("Today's Revenue",amount);
+        return ResponseEntity.ok(response);
+    }
+
+    @GetMapping("/monthlyrevenue")
+    public ResponseEntity<ApiResponse<Double>> getMonthlyRevenue(){
+        Double amount = ticketService.getMonthRevenue();
+        ApiResponse<Double> response = new ApiResponse<>("Today's Revenue",amount);
+        return ResponseEntity.ok(response);
+    }
+
+    @GetMapping("/getrevenue")
+    public ResponseEntity<ApiResponse<Double>> getRevenue(@RequestParam int month,
+                                                          @RequestParam int year){
+        Double amount = ticketService.getRevenue(month,year);
+        ApiResponse<Double> response= new ApiResponse<>("Revenue for :"+month+"/"+year,amount);
+        return ResponseEntity.ok(response);
+    }
 }

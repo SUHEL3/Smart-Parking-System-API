@@ -43,3 +43,14 @@ Content-Type: application/json
 ###
 GET http://localhost:8080/api/v1/ticket/report
 
+//Get revenue as per month and year
+###
+GET http://localhost:8080/api/v1/ticket/getrevenue?month=4&year=2026
+
+//Get today's revenue
+###
+GET http://localhost:8080/api/v1/ticket/todayrevenue
+
+//Get current month revenue
+###
+GET http://localhost:8080/api/v1/ticket/monthlyrevenue
