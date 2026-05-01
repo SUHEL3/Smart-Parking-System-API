@@ -33,12 +33,19 @@ public class TicketController {
     }
 
     @PutMapping("/exit/{id}")
-    public ResponseEntity<ApiResponse<Ticket>> exitVehicle(@PathVariable long id){
-         Ticket ticket = ticketService.exitVehicle(id);
-         ApiResponse<Ticket> response = new ApiResponse<>("Vehicle exited",ticket);
+    public ResponseEntity<ApiResponse<Integer>> exitVehicle(@PathVariable long id){
+         int ticket = ticketService.exitVehicle(id);
+         ApiResponse<Integer> response = new ApiResponse<>("OTP :",ticket);
          return ResponseEntity.status(200).body(response);
     }
 
+    @GetMapping("/verify")
+    public ResponseEntity<ApiResponse<Boolean>> verifyOTP(@RequestParam long id,
+                                                          @RequestParam int otp){
+        boolean verified = ticketService.verifyOtp(id,otp);
+        ApiResponse<Boolean> response = new ApiResponse<>("Verified :", verified);
+        return ResponseEntity.ok(response);
+    }
     @GetMapping("/report")
     public ResponseEntity<ApiResponse<List<Ticket>>> getReport(){
         List<Ticket> report = ticketService.getReport();

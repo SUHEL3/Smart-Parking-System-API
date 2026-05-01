@@ -31,7 +31,7 @@ public interface TicketRepository extends JpaRepository<Ticket, Long> {
 
     @Query("SELECT SUM(t.amount) FROM Ticket t " +
     "WHERE MONTH(t.exitTime) = :month " +
-    "AND YEAR(T.exitTime) = :year ")
+    "AND YEAR(t.exitTime) = :year ")
     Double getRevenue(@Param("month") Integer month,
                       @Param("year") Integer year);
 

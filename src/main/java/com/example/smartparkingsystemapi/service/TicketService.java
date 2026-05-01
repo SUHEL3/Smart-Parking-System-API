@@ -1,14 +1,17 @@
 package com.example.smartparkingsystemapi.service;
 
+import com.example.smartparkingsystemapi.entity.OTP;
 import com.example.smartparkingsystemapi.entity.ParkingSlot;
 import com.example.smartparkingsystemapi.entity.Ticket;
 import com.example.smartparkingsystemapi.entity.model.SlotStatus;
 import com.example.smartparkingsystemapi.entity.model.VehicleType;
+import com.example.smartparkingsystemapi.repository.OTPRepository;
 import com.example.smartparkingsystemapi.repository.ParkingSlotRepository;
 import com.example.smartparkingsystemapi.repository.TicketRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
+import java.security.SecureRandom;
 import java.time.Duration;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -20,10 +23,12 @@ public class TicketService {
 
     private final TicketRepository ticketRepository;
     private final ParkingSlotRepository parkingSlotRepository;
+    private final OTPRepository otpRepository;
 
-    public TicketService(TicketRepository ticketRepository,ParkingSlotRepository parkingSlotRepository){
+    public TicketService(TicketRepository ticketRepository,ParkingSlotRepository parkingSlotRepository,OTPRepository otpRepository){
         this.ticketRepository = ticketRepository;
         this.parkingSlotRepository = parkingSlotRepository;
+        this.otpRepository = otpRepository;
     }
 
     public List<Ticket> getAllTickets(){
@@ -56,7 +61,7 @@ public class TicketService {
         return ticketRepository.save(ticket);
     }
     @Transactional
-    public Ticket exitVehicle(long id){
+    public int exitVehicle(long id){
         Ticket newTicket = ticketRepository.findById(id).orElseThrow(()-> new RuntimeException("Ticket not found."));
         if(newTicket.getExitTime() != null){
             throw new RuntimeException("Vehicle already exited.");
@@ -73,7 +78,29 @@ public class TicketService {
         slot.setSlotStatus(SlotStatus.available);
         parkingSlotRepository.save(slot);
 
-        return ticketRepository.save(newTicket);
+        //OTP creation
+        SecureRandom random = new SecureRandom();
+        int otp = 100000 + random.nextInt(900000);
+        long expiry = System.currentTimeMillis() + (2 * 60 * 1000);
+
+        OTP newotp = new OTP(newTicket.getId(),expiry,3,otp);
+        otpRepository.save(newotp);
+
+        return otp;
+    }
+
+    public boolean verifyOtp(long id, int otp){
+        OTP existingOtp = otpRepository.findById(id).orElseThrow(
+                ()-> new RuntimeException("Invalid Id.")
+        );
+        if (existingOtp.getOtp() == otp){
+            long currTime = System.currentTimeMillis();
+            long expiryTime = existingOtp.getExpierytime();
+            otpRepository.deleteById(id);
+            return currTime <= expiryTime;
+        }else {
+            return false;
+        }
     }
 
     LocalDate date = LocalDate.now();
